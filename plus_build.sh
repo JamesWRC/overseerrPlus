@@ -5,8 +5,8 @@ RUN_ON_BUILD_ARGS=${3}      # Docker build args (DEV env ONLY)
 
 
 CMD_VALID=false
-PLUS_DOCKER_BUILD_TAG="dev"
-PLUS_GIT_BRANCH="plus/develop"
+PLUS_DOCKER_BUILD_TAG="plus-v2.1.0"
+PLUS_GIT_BRANCH="plus/main"
 
 
 # Check script arguments are valid
@@ -97,18 +97,18 @@ echo " - PLUS_GIT_BRANCH: $PLUS_GIT_BRANCH"
 echo
 
 # Put env vars into .env file based on build environment
-# echo "\
-# COMMIT_TAG=$latestOverseerrReleaseTag
-# PLUS_COMMIT_TAG=$latestOverseerrPlusReleaseTag
-# PLUS_BUILD_ENV=$BUILD_ENV
-# PLUS_DOCKER_BUILD_TAG=$PLUS_DOCKER_BUILD_TAG
-# PLUS_GIT_BRANCH=$PLUS_GIT_BRANCH
+echo "\
+COMMIT_TAG=$latestOverseerrReleaseTag
+PLUS_COMMIT_TAG=$latestOverseerrPlusReleaseTag
+PLUS_BUILD_ENV=$BUILD_ENV
+PLUS_DOCKER_BUILD_TAG=$PLUS_DOCKER_BUILD_TAG
+PLUS_GIT_BRANCH=$PLUS_GIT_BRANCH
 
-# " > ."${ENV_FILE_NAME}".plus.env 
+" > ."${ENV_FILE_NAME}".plus.env 
 
 # Export env variable for build tag
 export PLUS_DOCKER_BUILD_TAG=$PLUS_DOCKER_BUILD_TAG
-buildCMD="docker-compose -f 'docker-compose.plus.${ENV_FILE_NAME}.yml' build\
+buildCMD="docker compose -f 'docker-compose.plus.${ENV_FILE_NAME}.yml' build\
  --build-arg PLUS_DOCKER_BUILD_TAG='$PLUS_DOCKER_BUILD_TAG'\
  --build-arg COMMIT_TAG='$latestOverseerrReleaseTag'\
  --build-arg PLUS_ENV='$BUILD_ENV'\
@@ -132,7 +132,7 @@ sleep 5
 bash -c "${buildCMD}"
 
 # Stop and run image if specified 
-buildCMD="docker-compose -f 'docker-compose.plus.${ENV_FILE_NAME}.yml' up ${RUN_ON_BUILD_ARGS}"
+buildCMD="docker compose -f 'docker-compose.plus.${ENV_FILE_NAME}.yml' up ${RUN_ON_BUILD_ARGS}"
 if [ "${RUN_ON_BUILD}" == "run" ]; then
     echo "${buildCMD}"
     sleep 3
