@@ -1,3 +1,10 @@
+docker buildx ls
+docker buildx create --name oplus --driver docker-container --use
+docker buildx inspect --bootstrap
+# optional for cross-arch emulation (not needed for amd64/v2/v3)
+docker run --privileged --rm tonistiigi/binfmt --install all
+
+
 if [ -f .prod.plus.env ]
 then
   export $(cat .prod.plus.env | xargs)
@@ -42,6 +49,6 @@ echo "Building for platforms: ${BUILD_PLATFORMS}."
 echo "  BUILD ARGS -> ${BUILD_ARGS} "
 echo
 
-cmd="docker buildx build --push --platform $BUILD_PLATFORMS $BUILD_ARGS -f Dockerfile -t jameswrc/overseerrplus:$PLUS_DOCKER_BUILD_TAG ."
+cmd="docker buildx build --push --platform $BUILD_PLATFORMS $BUILD_ARGS -f Dockerfile -t jameswrc/overseerrplus:$PLUS_DOCKER_BUILD_TAG -t jameswrc/overseerrplus:$PLUS_COMMIT_TAG ."
 
 eval $cmd

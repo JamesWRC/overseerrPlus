@@ -5,7 +5,7 @@ RUN_ON_BUILD_ARGS=${3}      # Docker build args (DEV env ONLY)
 
 
 CMD_VALID=false
-PLUS_DOCKER_BUILD_TAG="plus-v2.1.0"
+PLUS_DOCKER_BUILD_TAG="plus-v2.1.1"
 PLUS_GIT_BRANCH="plus/main"
 
 
